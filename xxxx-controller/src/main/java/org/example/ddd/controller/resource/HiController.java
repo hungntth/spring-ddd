@@ -15,6 +15,11 @@ public class HiController {
 
     @GetMapping()
     public String hello() {
-        return eventAppService.sayHi("hungnt");
+        return eventAppService.sayHi("Hi");
+    }
+
+    @GetMapping("/hi")
+    public String sayHi() {
+        return eventAppService.sayHi("Ho");
     }
 }
