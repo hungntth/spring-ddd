@@ -3,3 +3,42 @@ server:
   tomcat:
     threads:
       max: 10
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      checkRandom:
+              registerHealthIndicator: true
+              slidingWindowSize: 10
+              permittedNumberOfCallsInHalfOpenState: 3
+      #        slidingWindowType: TIME_BASED
+              minimumNumberOfCalls: 20
+              waitDurationInOpenState: 50s
+              failureRateThreshold: 50
+              eventConsumerBufferSize: 10
+
+  ratelimiter:
+    instances:
+      backendA:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+        timeoutDuration: 0
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 100
+      backendB:
+        limitForPeriod: 5
+        limitRefreshPeriod: 10s
+        timeoutDuration: 3s
+
+management:
+  health:
+    circuit-breakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
